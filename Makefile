@@ -1,4 +1,5 @@
 develop:
+	git submodule update --init
 	python setup.py develop
 
 lint:
