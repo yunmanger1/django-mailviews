@@ -12,17 +12,22 @@
             padding-top: 60px;
         }
 
-        iframe {
+        #html iframe {
+            border: 0;
             height: 700px;
             width: 100%;
         }
 
-        textarea {
+        #html textarea {
+            border: 0;
             min-height: 250px;
             width: 100%;
         }
 
     </style>
+
+    <script type="text/javascript" src="{% static 'mailviews/javascript/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'mailviews/javascript/bootstrap-tab.js' %}"></script>
 
 </head>
 <body>
@@ -31,19 +36,28 @@
       <div class="navbar-inner">
         <div class="container">
           <a class="brand" href="#">Preview</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              {% if html %}
+                <li><a href="#html">HTML</a></li>
+              {% endif %}
+              <li><a href="#body-plain">Text</a></li>
+              <li><a href="#raw">Raw</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
       </div>
     </div>
 
     <div class="container">
 
+        <div class="page-header">
+            <h1>{{ subject }}</h1>
+        </div>
+
         <header>
 
-            <h1>{{ subject }}</h1>
-
             <div id="headers">
-
-                <h2>Headers</h2>
 
                 <table class="table table-striped table-condensed">
                     {% for name, value in headers %}
@@ -60,27 +74,34 @@
 
         {% if html %}
 
-            <section id="body-html">
+        <div id="html">
 
-                <h2>HTML Preview</h2>
+            <h2>HTML</h2>
 
-                <iframe src="data:text/html;base64,{{ escaped_html }}"></iframe>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#body-html" data-toggle="tab">Preview</a></li>
+                <li><a href="#html-raw" data-toggle="tab">Source</a></li>
+            </ul>
 
-            </section>
+            <div class="tab-content">
 
-            <section id="html-raw">
+                <section id="body-html" class="tab-pane active">
+                    <iframe src="data:text/html;base64,{{ escaped_html }}"></iframe>
+                </section>
 
-                <h2>Raw HTML</h2>
+                <section id="html-raw" class="tab-pane">
+                    <textarea>{{ html|escape }}</textarea>
+                </section>
 
-                <textarea>{{ html|escape }}</textarea>
+            </div>
 
-            </section>
+        </div>
 
         {% endif %}
 
         <section id="body-plain">
 
-            <h2>Text Body</h2>
+            <h2>Text</h2>
 
             {{ body|linebreaks }}
 
@@ -88,7 +109,7 @@
 
         <section id="raw">
 
-            <h2>Raw Message</h2>
+            <h2>Raw</h2>
 
             <pre>{{ raw }}</pre>
 
