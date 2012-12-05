@@ -2,7 +2,15 @@
 <html lang="en">
 <head>
 
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'mailviews/css/bootstrap.css' %}" />
+
     <style type="text/css">
+
+        body {
+            padding-top: 60px;
+        }
 
         iframe {
             height: 700px;
@@ -19,60 +27,74 @@
 </head>
 <body>
 
-    <header>
-
-        <h1>{{ subject }}</h1>
-
-        <div id="headers">
-
-            <h2>Headers</h2>
-
-            <dl>
-                {% for name, value in headers %}
-                    <dt>{{ name }}</dt>
-                    <dd>{{ value }}</dd>
-                {% endfor %}
-            </dl>
-
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="#">Preview</a>
         </div>
+      </div>
+    </div>
 
-    </header>
+    <div class="container">
 
-    {% if html %}
+        <header>
 
-        <section id="body-html">
+            <h1>{{ subject }}</h1>
 
-            <h2>HTML Body (Preview)</h2>
+            <div id="headers">
 
-            <iframe src="data:text/html;base64,{{ escaped_html }}"></iframe>
+                <h2>Headers</h2>
+
+                <table class="table table-striped table-condensed">
+                    {% for name, value in headers %}
+                        <tr>
+                            <th>{{ name }}</th>
+                            <td>{{ value }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+            </div>
+
+        </header>
+
+        {% if html %}
+
+            <section id="body-html">
+
+                <h2>HTML Preview</h2>
+
+                <iframe src="data:text/html;base64,{{ escaped_html }}"></iframe>
+
+            </section>
+
+            <section id="html-raw">
+
+                <h2>Raw HTML</h2>
+
+                <textarea>{{ html|escape }}</textarea>
+
+            </section>
+
+        {% endif %}
+
+        <section id="body-plain">
+
+            <h2>Text Body</h2>
+
+            {{ body|linebreaks }}
 
         </section>
 
-        <section id="html-raw">
+        <section id="raw">
 
-            <h2>HTML Body (Raw)</h2>
+            <h2>Raw Message</h2>
 
-            <textarea>{{ html|escape }}</textarea>
+            <pre>{{ raw }}</pre>
 
         </section>
 
-    {% endif %}
-
-    <section id="body-plain">
-
-        <h2>Body (Text)</h2>
-
-        {{ body|linebreaks }}
-
-    </section>
-
-    <section id="raw">
-
-        <h2>Raw Message</h2>
-
-        <pre>{{ raw }}</pre>
-
-    </section>
+    </div>
 
 </body>
 </html>
