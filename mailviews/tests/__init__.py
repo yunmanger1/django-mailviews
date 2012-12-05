@@ -4,6 +4,7 @@ if not settings.configured:
     settings.configure(
         DEBUG=True,
         INSTALLED_APPS=(
+            'django.contrib.staticfiles',
             'mailviews',
         ),
         DATABASES={
@@ -13,6 +14,7 @@ if not settings.configured:
             },
         },
         ROOT_URLCONF='mailviews.tests.urls',
+        STATIC_URL='/static/',
     )
 
 

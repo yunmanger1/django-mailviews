@@ -1,5 +1,11 @@
-develop:
+install-less:
+	npm install .
+
+bootstrap: install-less
 	git submodule update --init
+	./node_modules/.bin/lessc vendor/bootstrap/less/bootstrap.less > mailviews/static/mailviews/css/bootstrap.css
+
+develop: bootstrap
 	python setup.py develop
 
 lint:
@@ -24,4 +30,4 @@ publish: lint test-matrix
 	git push --tags
 	python setup.py sdist upload -r disqus
 
-.PHONY: clean lint test test-matrix test-server publish
+.PHONY: bootstrap clean develop lint test test-matrix test-server publish
