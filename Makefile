@@ -4,6 +4,7 @@ install-less:
 bootstrap: install-less
 	git submodule update --init
 	./node_modules/.bin/lessc vendor/bootstrap/less/bootstrap.less > mailviews/static/mailviews/css/bootstrap.css
+	cp vendor/bootstrap/js/bootstrap-*.js mailviews/static/mailviews/javascript
 
 develop: bootstrap
 	python setup.py develop
