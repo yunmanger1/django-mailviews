@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 
-    {% load static %}
+    {% load mailviews %}
 
-    <link rel="stylesheet" type="text/css" href="{% static 'mailviews/css/bootstrap.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'mailviews/css/mailviews.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% mailviews_static 'mailviews/css/bootstrap.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% mailviews_static 'mailviews/css/mailviews.css' %}" />
 
-    <script type="text/javascript" src="{% static 'mailviews/javascript/jquery.js' %}"></script>
-    <script type="text/javascript" src="{% static 'mailviews/javascript/bootstrap-tab.js' %}"></script>
+    <script type="text/javascript" src="{% mailviews_static 'mailviews/javascript/jquery.js' %}"></script>
+    <script type="text/javascript" src="{% mailviews_static 'mailviews/javascript/bootstrap-tab.js' %}"></script>
 
 </head>
 <body>
@@ -67,7 +67,7 @@
             <div class="tab-content">
 
                 <section id="body-html" class="tab-pane active">
-                    <iframe src="data:text/html;base64,{{ escaped_html }}"></iframe>
+                    <iframe src="data:text/html;base64,{{ escaped_html }}" frameborder="0" allowtransparency="true"></iframe>
                 </section>
 
                 <section id="html-raw" class="tab-pane">
@@ -84,11 +84,15 @@
 
             <h2>Text</h2>
 
-            {{ body|linebreaks }}
+            {% if body %}
+                {{ body|linebreaks }}
+            {% else %}
+                <p class="alert">This message doesn't contain any text content.</p>
+            {% endif %}
 
         </section>
 
-        <section id="raw">
+        <section id="raw" class="last">
 
             <h2>Raw</h2>
 
