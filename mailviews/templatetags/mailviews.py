@@ -7,6 +7,7 @@ from mailviews.helpers import should_use_staticfiles
 
 register = template.Library()
 
+
 def mailviews_static(path):
     if should_use_staticfiles():
         from django.contrib.staticfiles.templatetags import staticfiles

@@ -1,6 +1,6 @@
 import os
 
-from django.conf.urls.defaults import *
+from django.conf.urls.defaults import patterns, url
 
 from mailviews.helpers import should_use_staticfiles
 
