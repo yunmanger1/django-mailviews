@@ -1,12 +1,22 @@
-install-less:
+STATIC_DIRECTORY = mailviews/static/mailviews
+
+
+less:
 	npm install .
 
-bootstrap: install-less
+bootstrap: less
 	git submodule update --init
-	./node_modules/.bin/lessc vendor/bootstrap/less/bootstrap.less > mailviews/static/mailviews/css/bootstrap.css
-	cp vendor/bootstrap/js/bootstrap-*.js mailviews/static/mailviews/javascript
+	./node_modules/.bin/lessc vendor/bootstrap/less/bootstrap.less > $(STATIC_DIRECTORY)/css/bootstrap.css
+	cp vendor/bootstrap/js/bootstrap-*.js $(STATIC_DIRECTORY)/javascript
 
-develop: bootstrap
+jquery:
+	[[ -s $(STATIC_DIRECTORY)/javascript/jquery.js ]] || \
+		curl http://code.jquery.com/jquery-1.8.3.js > $(STATIC_DIRECTORY)/javascript/jquery.js
+
+static: bootstrap jquery
+
+
+develop: static
 	python setup.py develop
 
 lint:
@@ -26,7 +36,7 @@ test-matrix: clean
 test-server: develop
 	python mailviews/tests/manage.py runserver
 
-sdist: bootstrap
+sdist: static
 	python setup.py sdist
 
 publish: lint test-matrix sdist
@@ -34,4 +44,4 @@ publish: lint test-matrix sdist
 	git push --tags
 	python setup.py upload -r disqus
 
-.PHONY: bootstrap clean develop lint test test-matrix test-server publish sdist
+.PHONY: less bootstrap jquery static develop lint clean test test-matrix test-server sdist publish
