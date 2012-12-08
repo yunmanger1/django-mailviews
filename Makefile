@@ -26,9 +26,12 @@ test-matrix: clean
 test-server: develop
 	python mailviews/tests/manage.py runserver
 
-publish: lint test-matrix
+sdist: bootstrap
+	python setup.py sdist
+
+publish: lint test-matrix sdist
 	git tag $$(python setup.py --version)
 	git push --tags
-	python setup.py sdist upload -r disqus
+	python setup.py upload -r disqus
 
-.PHONY: bootstrap clean develop lint test test-matrix test-server publish
+.PHONY: bootstrap clean develop lint test test-matrix test-server publish sdist
