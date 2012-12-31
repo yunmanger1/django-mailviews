@@ -1,20 +1,26 @@
 from base64 import b64encode
 from django.views.generic.simple import direct_to_template
 
+from mailviews.previews import registry
 
-def render_message_to_response(request, message):
-    """
-    A generic view that renders an email message preview to an HTTP response.
 
-    :param request: An HTTP request.
-    :type request: :class:`django.http.HttpRequest` instance
-    :param message: An email message.
-    :type message: :class:`django.core.mail.EmailMessage` instance
-    :returns: An HTTP response.
-    :rtype: :class:`django.http.HttpResponse`
-    """
+def preview_list(request):
+    context = {
+        'registry': registry,
+    }
+    return direct_to_template(request, 'mailviews/previews/list.html', extra_context=context)
+
+
+def preview_detail(request, module, identifier):
+    preview = registry[module][identifier]
+
+    message_view = preview.get_message_view(request)
+    message = message_view.render_to_message()
+
     raw_message = message.message()
     context = {
+        'preview': preview,
+        'message_view': message_view,
         'message': message,
         'subject': message.subject,
         'body': message.body,
@@ -33,5 +39,4 @@ def render_message_to_response(request, message):
     except StopIteration:
         pass
 
-    return direct_to_template(request, 'mailviews/message.html',
-        extra_context=context)
+    return direct_to_template(request, 'mailviews/previews/detail.html', extra_context=context)
