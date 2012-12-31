@@ -32,7 +32,7 @@ class Preview(object):
     @property
     def url(self):
         return reverse('mailviews-preview-detail', kwargs={
-            'module': '%s' % self.module,
+            'module': self.module,
             'identifier': self.identifier
         })
 
