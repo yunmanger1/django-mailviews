@@ -35,6 +35,7 @@ class BasicHTMLEmailMessageView(TemplateContextMixin, TemplatedHTMLEmailMessageV
 
 class BasicPreview(Preview):
     message_view = BasicEmailMessageView
+    verbose_name = 'Basic Message'
     description = 'A basic text email message.'
 
     def get_message_view(self, request):
@@ -45,6 +46,7 @@ class BasicPreview(Preview):
 
 class BasicHTMLPreview(BasicPreview):
     message_view = BasicHTMLEmailMessageView
+    verbose_name = 'Basic HTML Message'
     description = 'A basic HTML email message.'
 
 
