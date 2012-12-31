@@ -1,5 +1,19 @@
 {% extends "mailviews/base.html" %}
 
+{% block navigation %}
+
+    <div class="nav-collapse collapse">
+        <ul class="nav">
+            {% if html %}
+            <li><a href="#html">HTML</a></li>
+            {% endif %}
+            <li><a href="#body-plain">Text</a></li>
+            <li><a href="#raw">Raw</a></li>
+        </ul>
+    </div>
+
+{% endblock %}
+
 {% block content %}
 
     <div class="page-header">
