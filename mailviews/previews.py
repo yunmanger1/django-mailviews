@@ -2,7 +2,6 @@ import logging
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.template.defaultfilters import slugify
 from django.utils.importlib import import_module
 from django.utils.module_loading import module_has_submodule
 
